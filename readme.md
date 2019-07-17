@@ -38,3 +38,14 @@ False
 pip install flask-login
 
 UserMixin
+
+database many to many
+
+user1  = User.query.get(1)
+user2 = User.query.get(2)
+
+>>> user1.is_following(user2)
+False
+>>> user1.follow(user2)
+>>> user1.is_following(user2)
+True
