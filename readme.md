@@ -49,3 +49,48 @@ False
 >>> user1.follow(user2)
 >>> user1.is_following(user2)
 True
+
+user1.is_following(user2)  return flase or true
+user1.follow(user2)
+user1.unfollow(user2)
+user1.followed.all()  user1 is following which users
+user1.followers.all()  user1's followers
+
+
+
+Page 1, implicit: http://localhost:5000/index
+Page 1, explicit: http://localhost:5000/index?page=1
+Page 3: http://localhost:5000/index?page=3
+
+http://127.0.0.1:5000/explore?page=2
+
+paginate: 显示第一页的内容， 每页显示三个post
+posts = Post.query.order_by(Post.timestamp.desc()).paginate(1, 3, False).items
+
+has_next: 是否还有下一页
+has_prev: 是否还有上一页
+items: 返回当前页的所有内容
+next(error_out=False): 返回下一页的Pagination对象
+prev(error_out=False): 返回上一页的Pagination对象
+page: 当前页的页码（从1开始）
+pages: 总页数
+per_page: 每页显示的数量
+perv_num: 上一页页码数
+next_num: 下一页页码数
+query: 返回 创建这个Pagination对象的查询对象
+total: 查询返回的记录总数
+iter_pages(left_edge=2, left_current=2, right_current=5, right_edge=2)
+
+
+@app.route('/explore')
+@login_required
+def explore():
+    page = request.args.get('page', 1, type=int)  默认显示第一页的内容
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page, app.config['POSTS_PER_PAGE'], False)
+    如果有下一页， page设为下一页页码数  explore?page=2
+    next_url = url_for('explore', page=posts.next_num) if posts.has_next else None
+    如果有上一页， page设为上一页页码数  explore?page=1
+    prev_url = url_for('explore', page=posts.prev_num) if posts.has_prev else None
+    return render_template('index.html', title='Explore', posts=posts.items,
+                           next_url=next_url, prev_url=prev_url)
