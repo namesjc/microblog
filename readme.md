@@ -94,3 +94,16 @@ def explore():
     prev_url = url_for('explore', page=posts.prev_num) if posts.has_prev else None
     return render_template('index.html', title='Explore', posts=posts.items,
                            next_url=next_url, prev_url=prev_url)
+
+
+email support
+
+pip install flask-email
+pip install pyjwt   # JSON Web Tokens
+
+token  = jwt.encode({'a': 'b'}, 'my-secret', algorithm='HS256')
+>>> token
+b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhIjoiYiJ9.dvOo58OBDHiuSHD4uW88nfJikhYAXc_sfUHq1mDi4G0'
+>>> jwt.decode(token, 'my-secret', algorithm=['HS256'])
+{'a': 'b'}
+
