@@ -107,3 +107,9 @@ b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhIjoiYiJ9.dvOo58OBDHiuSHD4uW88nfJikhYA
 >>> jwt.decode(token, 'my-secret', algorithm=['HS256'])
 {'a': 'b'}
 
+facelift
+
+pip install flask-bootstrap
+
+
+
