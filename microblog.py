@@ -1,6 +1,9 @@
 #!/mnt/c/Users/adiac/Documents/project/microblog/venv/bin/python
-from app import app, db
+from app import create_app, db
 from app.models import User, Post
+
+
+app = create_app()
 
 
 @app.shell_context_processor
