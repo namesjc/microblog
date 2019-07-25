@@ -131,4 +131,18 @@ moment('2017-09-28T21:45:23Z').calendar()
 "Today at 2:45 PM"
 
 
+pip install elasticsearch
 
+from app.search import add_to_index, remove_from_index, query_index
+>>> for post in Post.query.all():
+...     add_to_index('posts', post)
+query_index('posts', 'one two three four five', 1, 100)
+([9, 1, 2, 3, 4, 5, 6, 11, 12, 7, 8], {'value': 11, 'relation': 'eq'})
+query_index('posts', 'first second third', 1, 3)
+([9, 1, 2], {'value': 11, 'relation': 'eq'})
+query_index('posts', 'first second third', 2, 3)
+([3, 4, 5], {'value': 11, 'relation': 'eq'})
+query_index('posts', 'first second third', 3, 3)
+([6, 11, 12], {'value': 11, 'relation': 'eq'})
+
+app.elasticsearch.indices.delete('posts')

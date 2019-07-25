@@ -18,3 +18,4 @@ class Config:
     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
     ADMINS = ['adiachan@foxmail.com']
     POSTS_PER_PAGE = 3
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
