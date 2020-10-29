@@ -34,10 +34,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
                         <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-                    {% elif  current_user.role == 'admin' %}
-                        <li><a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a></li>
-                        <li><a href="{{ url_for('admin.index') }}">Admin</a></li>
-                        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                     {% else %}
                         <li><a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a></li>
                         <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>

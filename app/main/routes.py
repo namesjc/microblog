@@ -3,8 +3,9 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import current_user, login_required
 from app import db
 from app.main.forms import EditProfileForm, PostForm, SearchForm
-from app.models import User, Post, Notification
+from app.models import User, Post, Notification, Permission
 from app.main import bp
+from app.decorators import admin_required, permission_required
 
 
 @bp.before_app_request
@@ -143,3 +144,17 @@ def notifications():
         'data': n.get_data(),
         'timestamp': n.timestamp
     } for n in notifications])
+
+
+@bp.route('/admins')
+@login_required
+@admin_required
+def for_admins_only():
+    return "For administrators!"
+
+
+@bp.route('/moderate')
+@login_required
+@permission_required(Permission.MODERATE)
+def for_moderators_only():
+    return "For comment moderators!"
