@@ -22,6 +22,15 @@ mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
 
+def configure_database(app):
+    
+    @app.before_first_request
+    def initialize_database():
+        db.create_all()
+
+    @app.teardown_request
+    def shutdown_session(exception=None):
+        db.session.remove()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -47,6 +56,8 @@ def create_app(config_class=Config):
 
     from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
+
+    configure_database(app)
 
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) if app.config['ELASTICSEARCH_URL'] else None
     app.redis = Redis.from_url(app.config['REDIS_URL'])

@@ -1,0 +1,33 @@
+version: "3"
+services:
+  mysql:
+    image: "mysql:latest"
+    restart: always
+    volumes:
+      - /home/marco/mysql_vol:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=youwillneverknow
+  redis:
+    image: "redis:latest"
+  elasticsearch:
+    image: "elasticsearch:latest"
+  nginx:
+    depends_on:
+      - server
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "8080:80"
+  server:
+    depends_on:
+      - mysql
+      - redis
+      - elasticsearch
+    build:
+      context: .
+    environment:
+      - REDIS_URL=redis
+      - ELASTICSEARCH_URL=elasticsearch
+      - DATABASE_URL=mysql
+      - DATABASE_PASSWORD=youwillneverknow
