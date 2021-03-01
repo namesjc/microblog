@@ -1,4 +1,3 @@
-#!/mnt/c/Users/adiac/Documents/project/microblog/venv/bin/python
 from app import create_app, db
 from app.models import User, Post, Task, Notification
 
@@ -13,4 +12,4 @@ def make_shell_context():
 
 if __name__ == "__main__":
     # app.run(debug=True)
-    app.run(debug=True)
+    app.run(debug=False)

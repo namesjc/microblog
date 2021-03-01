@@ -4,7 +4,7 @@ services:
     image: "mysql:latest"
     restart: always
     volumes:
-      - /home/marco/mysql_vol:/var/lib/mysql
+      - /home/ubuntu/mysql_vol:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=youwillneverknow
   redis:
@@ -26,6 +26,8 @@ services:
       - elasticsearch
     build:
       context: .
+    # ports:
+    #   - "5000:5000"
     environment:
       - REDIS_URL=redis
       - ELASTICSEARCH_URL=elasticsearch

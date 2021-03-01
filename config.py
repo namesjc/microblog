@@ -22,5 +22,5 @@ class Config:
     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
     ADMINS = ['adiachan@foxmail.com']
     POSTS_PER_PAGE = 3
-    ELASTICSEARCH_URL = 'http://{elasticsearch_url}:9200'
+    ELASTICSEARCH_URL = f'http://{elasticsearch_url}:9200'
     REDIS_URL = f'redis://{redis_url}:6379/0' or 'redis://'
