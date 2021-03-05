@@ -1,4 +1,4 @@
-FROM python
+FROM python:3.9.2-slim-buster
 
 ENV FLASK_APP run.py
 

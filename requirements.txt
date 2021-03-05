@@ -16,7 +16,8 @@ Flask-SQLAlchemy
 flask-restful
 requests
 pillow
-elasticsearch
+elasticsearch==7.0.1
 redis
 rq
-jwt
+pyjwt
+cryptography

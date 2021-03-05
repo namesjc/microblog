@@ -19,7 +19,7 @@ class SearchableMixin(object):
     @classmethod
     def search(cls, expression, page, per_page):
         ids, total = query_index(cls.__tablename__, expression, page, per_page)
-        if total['value'] == 0:
+        if total == 0:
             return cls.query.filter_by(id=0), 0
         when = []
         for i in range(len(ids)):
@@ -145,7 +145,7 @@ class User(db.Model, UserMixin, PaginatedAPIMixin):
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
-            current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+            current_app.config['SECRET_KEY'], algorithm='HS256')
 
     @staticmethod
     def verify_reset_password_token(token):

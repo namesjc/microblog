@@ -6,11 +6,24 @@ services:
     volumes:
       - /home/ubuntu/mysql_vol:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=youwillneverknow
+      - MYSQL_ROOT_PASSWORD
+    ports:
+      - "3306:3306"
+    networks:
+      - net
   redis:
     image: "redis:latest"
+    networks:
+      - net
   elasticsearch:
-    image: "elasticsearch:latest"
+    image: "elasticsearch:7.10.1"
+    environment: 
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - net
   nginx:
     depends_on:
       - server
@@ -19,6 +32,8 @@ services:
       context: ./nginx
     ports:
       - "8080:80"
+    networks:
+      - net
   server:
     depends_on:
       - mysql
@@ -26,10 +41,18 @@ services:
       - elasticsearch
     build:
       context: .
-    # ports:
-    #   - "5000:5000"
+    networks:
+      - net
     environment:
       - REDIS_URL=redis
       - ELASTICSEARCH_URL=elasticsearch
       - DATABASE_URL=mysql
-      - DATABASE_PASSWORD=youwillneverknow
+      - MYSQL_ROOT_PASSWORD
+      - MAIL_SERVER
+      - MAIL_USERNAME
+      - MAIL_PASSWORD
+volumes:
+  elasticsearch_data:
+    driver: local
+networks:
+  net:

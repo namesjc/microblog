@@ -5,7 +5,7 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 database_url = os.environ.get('DATABASE_URL')
-database_password = os.environ.get('DATABASE_PASSWORD')
+database_password = os.environ.get('MYSQL_ROOT_PASSWORD')
 redis_url = os.environ.get('REDIS_URL') 
 elasticsearch_url = os.environ.get('ELASTICSEARCH_URL')
 
@@ -17,10 +17,10 @@ class Config:
     FLASK_ADMIN_SWATCH = 'Cerulean'
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)
-    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
-    MAIL_USERNAME = os.environ.get('EMAIL_USER')
-    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
-    ADMINS = ['adiachan@foxmail.com']
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') or True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    ADMINS = os.environ.get('MAIL_USERNAME')
     POSTS_PER_PAGE = 3
     ELASTICSEARCH_URL = f'http://{elasticsearch_url}:9200'
     REDIS_URL = f'redis://{redis_url}:6379/0' or 'redis://'
