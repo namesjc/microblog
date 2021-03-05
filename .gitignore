@@ -15,7 +15,11 @@ env
 venv
 
 # for vscode
+.vscode
 .idea/*.xml
+
+# environment
+.env
 
 # other
 .DS_Store
@@ -31,4 +35,5 @@ package-lock.json
 #migration
 migrations
 
+#config file
 config.py
