@@ -12,6 +12,7 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from elasticsearch import Elasticsearch
 from redis import Redis
+from prometheus_flask_exporter.multiprocess import GunicornInternalPrometheusMetrics
 
 
 db = SQLAlchemy()
@@ -21,9 +22,12 @@ login.login_view = "auth.login"
 mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
+from app.models import basic_auth
+metrics = GunicornInternalPrometheusMetrics.for_app_factory(metrics_decorator=basic_auth.login_required)
+
 
 def configure_database(app):
-    
+
     @app.before_first_request
     def initialize_database():
         db.create_all()
@@ -31,6 +35,7 @@ def configure_database(app):
     @app.teardown_request
     def shutdown_session(exception=None):
         db.session.remove()
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -42,6 +47,8 @@ def create_app(config_class=Config):
     mail.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
+
+    metrics.init_app(app)
     from app.models import admin
     admin.init_app(app)
 
@@ -59,7 +66,8 @@ def create_app(config_class=Config):
 
     configure_database(app)
 
-    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) if app.config['ELASTICSEARCH_URL'] else None
+    app.elasticsearch = Elasticsearch(
+        [app.config['ELASTICSEARCH_URL']]) if app.config['ELASTICSEARCH_URL'] else None
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('microblog-tasks', connection=app.redis)
 
@@ -67,7 +75,8 @@ def create_app(config_class=Config):
         if app.config['MAIL_SERVER']:
             auth = None
             if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
-                auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
+                auth = (app.config['MAIL_USERNAME'],
+                        app.config['MAIL_PASSWORD'])
             secure = None
             if app.config['MAIL_USE_TLS']:
                 secure = ()
@@ -83,7 +92,8 @@ def create_app(config_class=Config):
 
         if not os.path.exists('logs'):
             os.mkdir('logs')
-        file_handler = RotatingFileHandler('logs/microblog.log', maxBytes=10240, backupCount=10)
+        file_handler = RotatingFileHandler(
+            'logs/microblog.log', maxBytes=10240, backupCount=10)
         file_handler.setFormatter(logging.Formatter(
             '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
         file_handler.setLevel(logging.INFO)

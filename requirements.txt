@@ -21,3 +21,6 @@ redis
 rq
 pyjwt
 cryptography
+prometheus-flask-exporter
+flask_httpauth
+gunicorn

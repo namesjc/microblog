@@ -35,5 +35,5 @@ package-lock.json
 #migration
 migrations
 
-#config file
-config.py
+
+docker-compose.yml

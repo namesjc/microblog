@@ -1,12 +1,13 @@
 version: "3"
 services:
   mysql:
-    image: "mysql:latest"
+    image: "mariadb:latest"
     restart: always
     volumes:
-      - /home/ubuntu/mysql_vol:/var/lib/mysql
+      - /Users/echo/Documents/projects/microblog/mysql_vol:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=microblog
     ports:
       - "3306:3306"
     networks:
@@ -17,7 +18,7 @@ services:
       - net
   elasticsearch:
     image: "elasticsearch:7.10.1"
-    environment: 
+    environment:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
@@ -47,10 +48,11 @@ services:
       - REDIS_URL=redis
       - ELASTICSEARCH_URL=elasticsearch
       - DATABASE_URL=mysql
-      - MYSQL_ROOT_PASSWORD
-      - MAIL_SERVER
-      - MAIL_USERNAME
-      - MAIL_PASSWORD
+      - DATABASE_NAME=microblog
+      - DATABASE_PASSWORD=password
+      - MAIL_SERVER=smtp.qq.com
+      - MAIL_USERNAME=adiachan@foxmail.com
+      - MAIL_PASSWORD=undffmpamglhbhdd
 volumes:
   elasticsearch_data:
     driver: local

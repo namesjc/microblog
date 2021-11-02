@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user
 from flask_admin import AdminIndexView, Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from wtforms import PasswordField
 from app import db, login
 from app.search import add_to_index, remove_from_index, query_index
@@ -86,9 +87,21 @@ def load_user(id):
     return User.query.get(int(id))
 
 
+basic_auth = HTTPBasicAuth()
+
+
+@basic_auth.verify_password
+def verify_password(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and user.check_password(password):
+        return user
+
+
 followers = db.Table('followers',
-                     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-                     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+                     db.Column('follower_id', db.Integer,
+                               db.ForeignKey('user.id')),
+                     db.Column('followed_id', db.Integer,
+                               db.ForeignKey('user.id'))
                      )
 
 
@@ -107,7 +120,8 @@ class User(db.Model, UserMixin, PaginatedAPIMixin):
         backref=db.backref('followers', lazy='dynamic'),
         lazy='dynamic'
     )
-    notifications = db.relationship('Notification', backref='user', lazy='dynamic')
+    notifications = db.relationship(
+        'Notification', backref='user', lazy='dynamic')
     tasks = db.relationship('Task', backref='user', lazy='dynamic')
     role = db.Column(db.String(64), index=True)
 
@@ -164,8 +178,10 @@ class User(db.Model, UserMixin, PaginatedAPIMixin):
         return n
 
     def launch_task(self, name, description, *args, **kwargs):
-        rq_job = current_app.task_queue.enqueue('app.tasks.' + name, self.id, *args, **kwargs)
-        task = Task(id=rq_job.get_id(), name=name, description=description, user=self)
+        rq_job = current_app.task_queue.enqueue(
+            'app.tasks.' + name, self.id, *args, **kwargs)
+        task = Task(id=rq_job.get_id(), name=name,
+                    description=description, user=self)
         db.session.add(task)
         return task
 
@@ -210,7 +226,8 @@ class UserView(ModelView):
     can_export = True
     column_searchable_list = ['username']
     can_view_details = True
-    form_excluded_columns = ('password', 'posts', 'followers', 'followed', 'notifications', 'tasks')
+    form_excluded_columns = (
+        'password', 'posts', 'followers', 'followed', 'notifications', 'tasks')
     form_extra_fields = {'password2': PasswordField('Password')}
 
     def is_accessible(self):

@@ -7,7 +7,10 @@ WORKDIR /app
 COPY . .
 
 RUN pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
-RUN pip install gunicorn -i https://mirrors.aliyun.com/pypi/simple
+
+ENV PROMETHEUS_MULTIPROC_DIR /tmp
+ENV prometheus_multiproc_dir /tmp
+
 RUN chmod +x boot.sh
 
 EXPOSE 5000

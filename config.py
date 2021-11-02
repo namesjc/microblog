@@ -5,14 +5,15 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 database_url = os.environ.get('DATABASE_URL')
-database_password = os.environ.get('MYSQL_ROOT_PASSWORD')
-redis_url = os.environ.get('REDIS_URL') 
+database = os.environ.get('DATABASE_NAME')
+database_password = os.environ.get('DATABASE_PASSWORD')
+redis_url = os.environ.get('REDIS_URL')
 elasticsearch_url = os.environ.get('ELASTICSEARCH_URL')
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
     # SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI") or "sqlite:///" + os.path.join(basedir, "app.db")
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://root:{database_password}@{database_url}:3306/microblog'
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://root:{database_password}@{database_url}:3306/{database}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_ADMIN_SWATCH = 'Cerulean'
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
