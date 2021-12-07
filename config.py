@@ -14,6 +14,7 @@ redis_password = os.environ.get('REDIS_PASSWORD')
 redis_port = os.environ.get('REDIS_PORT')
 elasticsearch_url = os.environ.get('ELASTICSEARCH_URL')
 
+
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
     # SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URI") or "sqlite:///" + os.path.join(basedir, "app.db")

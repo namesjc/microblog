@@ -23,7 +23,8 @@ mail = Mail()
 bootstrap = Bootstrap()
 moment = Moment()
 from app.models import basic_auth
-metrics = GunicornInternalPrometheusMetrics.for_app_factory(metrics_decorator=basic_auth.login_required)
+metrics = GunicornInternalPrometheusMetrics.for_app_factory(
+    metrics_decorator=basic_auth.login_required)
 
 
 def configure_database(app):
