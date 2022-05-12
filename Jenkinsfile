@@ -55,6 +55,7 @@ spec:
         GIT_CREDS = credentials('github')
         GIT_REPO_URL = '$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/namesjc/homelab.git'
         GIT_REPO_EMAIL = 'adiachan@outlook.com'
+        GIT_REPO_BRANCH = '23-API'
         // GIT_REPO_BRANCH = "master"
 
       }
@@ -62,9 +63,9 @@ spec:
         container('tools') {
             sh "git clone https://${GIT_REPO_URL}"
             sh "git config --global user.email ${GIT_REPO_EMAIL}"
-            sh "git checkout -b master"
+            // sh "git checkout -b master"
           dir("apps") {
-            //   sh "git checkout ${env.GIT_REPO_BRANCH}"
+            // sh "git checkout ${GIT_REPO_BRANCH}"
             //install done
             sh '''#!/bin/bash
               echo $GIT_REPO_EMAIL
