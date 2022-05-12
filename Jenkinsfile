@@ -72,8 +72,8 @@ spec:
               echo $GIT_COMMIT
               ls -lth
               cd ./apps/microblog
-              yq eval '.microblog.main.image.repository = ${IMAGE_REPO}' -i values.yaml
-              yq eval '.microblog.main.image.tag = ${IMAGE_TAG}' -i values.yaml
+              yq eval '.microblog.main.image.repository = env(IMAGE_REPO)' -i values.yaml
+              yq eval '.microblog.main.image.tag = env(IMAGE_TAG)' -i values.yaml
               cat values.yaml
               pwd
               git commit -am 'Publish new version' && git push || echo 'no changes'
