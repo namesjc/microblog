@@ -16,7 +16,7 @@ Flask-SQLAlchemy
 flask-restful
 requests
 pillow
-elasticsearch==7.0.1
+elasticsearch
 redis
 rq
 pyjwt
