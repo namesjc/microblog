@@ -64,14 +64,14 @@ spec:
             sh "git clone https://${GIT_REPO_URL}"
             sh "git config --global user.email ${GIT_REPO_EMAIL}"
             // sh "git checkout -b master"
-          dir("apps") {
+          dir("homelab") {
             // sh "git checkout ${GIT_REPO_BRANCH}"
             //install done
             sh '''#!/bin/bash
               echo $GIT_REPO_EMAIL
               echo $GIT_COMMIT
               ls -lth
-              cd ./microblog
+              cd ./apps/microblog
               yq eval '.microblog.main.image.repository = ${IMAGE_REPO}' -i values.yaml
               yq eval '.microblog.main.image.tag = ${IMAGE_TAG}' -i values.yaml
               cat values.yaml
