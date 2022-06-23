@@ -8,7 +8,7 @@ COPY app app
 COPY run.py config.py gunicorn_config.py worker.py boot.sh ./
 RUN chmod +x boot.sh
 
-RUN pip install -r requirements.txt --proxy https://mirrors.aliyun.com/pypi/simple
+RUN pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
 
 ENV FLASK_APP run.py
 ENV PROMETHEUS_MULTIPROC_DIR /tmp
