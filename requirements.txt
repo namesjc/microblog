@@ -24,4 +24,4 @@ cryptography
 prometheus-flask-exporter
 flask_httpauth
 gunicorn
-psycopg2-binary
+psycopg2
