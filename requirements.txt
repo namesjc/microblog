@@ -1,4 +1,4 @@
-flask
+Flask==2.0.1
 flask_admin
 flask_bootstrap
 flask_mail
@@ -16,7 +16,7 @@ Flask-SQLAlchemy
 flask-restful
 requests
 pillow
-elasticsearch
+elasticsearch==7.13.3
 redis
 rq
 pyjwt
@@ -24,3 +24,4 @@ cryptography
 prometheus-flask-exporter
 flask_httpauth
 gunicorn
+psycopg2-binary

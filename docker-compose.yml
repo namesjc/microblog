@@ -1,19 +1,18 @@
 version: "3"
 services:
   mysql:
-    image: "mariadb:latest"
+    image: mariadb:latest
     restart: always
     volumes:
-      - /Users/echo/Documents/projects/microblog/mysql_vol:/var/lib/mysql
+      - /home/marco/data/mysql_vol:/var/lib/postgresql/data
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=microblog
-    ports:
-      - "3306:3306"
     networks:
       - net
   redis:
     image: "redis:latest"
+    command: '--requirepass password'
     networks:
       - net
   elasticsearch:
@@ -46,10 +45,12 @@ services:
       - net
     environment:
       - REDIS_URL=redis
+      - REDIS_PASSWORD=password
       - ELASTICSEARCH_URL=elasticsearch
       - DATABASE_URL=mysql
       - DATABASE_NAME=microblog
       - DATABASE_PASSWORD=password
+      - DATABASE_PORT=3306
       - MAIL_SERVER=smtp.qq.com
       - MAIL_USERNAME=adiachan@foxmail.com
       - MAIL_PASSWORD=undffmpamglhbhdd
